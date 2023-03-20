@@ -146,6 +146,10 @@ mongoose
 		console.log('Finished saving the array!\x1b[0m');
 		//! (Color cyan end)
 		//! Array version end
+
+		//? Added this utility here to wipe your Maps and Arrays databases if you need it
+		// await MinisMap.deleteOne({});
+		// await MinisArray.deleteOne({});
 	})
 	.catch(() => {
 		console.log('Error connecting to MongoDB');
