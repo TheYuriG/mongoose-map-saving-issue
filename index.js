@@ -16,6 +16,7 @@ console.log(
 	(colorless ? '' : '\x1b[31m') + "Attempting to import the mongo key on line 10 of 'index.js'"
 );
 const { mongoKey } = require('./private/keys.js');
+console.time('Connection');
 
 //? Import our models
 const Mini = require('./models/Mini_model.js');
@@ -29,10 +30,12 @@ mongoose
 	.connect(mongoKey)
 	.then(async () => {
 		//? Start the server
+		console.timeEnd('Connection'); //! 2.669s
 		console.log('Connected to MongoDB!\x1b[0m');
 		//! (Color red end)
 
 		//? Check if we already have enough documents on the database
+		console.time('Populating documents');
 		const totalDocuments = await Mini.find().countDocuments();
 		//! (Color green start)
 		console.log(
@@ -67,10 +70,12 @@ mongoose
 				await Mini.create({ data: 'document number ' + documentPosition });
 			}
 		}
-		console.log('Database population completed!');
+		console.timeEnd('Populating documents'); //! 0.362s
 
 		//? Once we have 20K documents, try to save them as map and then as array
-		const aVeryLargeNumberOfMiniDocuments = await Mini.find();
+		console.time('Fetching documents');
+		const aVeryLargeNumberOfMiniDocuments = await Mini.find(); // Add this to stripe down all useless data if you want: .select('-createdAt updatedAt -__v -data');
+		console.timeEnd('Fetching documents'); //! 6.870s
 		console.log(
 			'Fetched all Mini documents, total count: ' +
 				aVeryLargeNumberOfMiniDocuments.length +
@@ -80,16 +85,15 @@ mongoose
 
 		//! Map version start
 		//! (Color magenta start)
+		console.time('Map Process');
 		console.log(
 			(colorless ? '' : '\x1b[35m') +
 				'Starting the process of mapping all minis and timing it'
 		);
-		console.time('Minis Map');
 		const futureMapOfMinis = [];
-		console.log('Created Minis map');
-		console.timeLog('Minis Map');
 		//? Loop through all found Mini documents and creates an array
 		//? for them, which we gonna sort before storing
+		console.time('Iterating through all minis');
 		for (
 			let miniPosition = 0;
 			miniPosition < aVeryLargeNumberOfMiniDocuments.length;
@@ -103,35 +107,33 @@ mongoose
 				},
 			]);
 		}
-		console.log('Set all K/V entries for the Minis Map! Sorting them now...');
-		console.timeLog('Minis Map');
+		console.timeEnd('Iterating through all minis'); //! 0.163s
 
+		console.time('Sorting all minis');
 		futureMapOfMinis.sort((a, b) => (a[1].timestamp > b[1].timestamp ? 1 : -1));
-		console.log('Sorted array of Minis, creating Map now...');
-		console.timeLog('Minis Map');
+		console.timeEnd('Sorting all minis'); //! 0.017s
 
 		//? Create a new Map
+		console.time('Creating and populating Map of Minis');
 		const mapOfMinis = new Map();
 		for (let minisIndex = 0; minisIndex < futureMapOfMinis.length; minisIndex++) {
 			mapOfMinis.set(futureMapOfMinis[minisIndex][0], futureMapOfMinis[minisIndex][1]);
 		}
-		console.log('Minis Map created, saving it now...');
-		console.timeLog('Minis Map');
+		console.timeEnd('Creating and populating Map of Minis'); //! 0.015s
 
+		console.time('Saving Map of Minis to MongoDB using Mongoose');
 		await MinisMap.create({ mini: mapOfMinis });
-		console.log('Saved Minis map, logging time...');
-		console.timeLog('Minis Map');
+		console.timeEnd('Saving Map of Minis to MongoDB using Mongoose'); //! 5min43sec674ms
+		console.timeEnd('Map Process'); //! 5min43sec873ms --- nearly the same time as saving!
 		console.log('Saved Minis Map successfully!\x1b[0m');
 		//! (Color magenta end)
 		//! Map version end
 
 		//! Array version
 		//! (Color cyan start)
-		console.log(
-			(colorless ? '' : '\x1b[36m') +
-				'Set all K/V entries for the Minis Map! Sorting them now...'
-		);
-		console.time('Minis Array');
+		console.time('Array Process');
+		console.log((colorless ? '' : '\x1b[36m') + 'Creating Array of Minis now!');
+		console.time('Populating Array of Minis');
 		const arrayOfMinis = [];
 
 		//? Loop through all found Mini documents and creates an Array for them
@@ -145,18 +147,16 @@ mongoose
 				timestamp: Math.floor(Math.random() * 100000),
 			});
 		}
-		console.log('Created Array for minis, sorting them now...');
-		console.timeLog('Minis Array');
+		console.timeEnd('Populating Array of Minis'); //! 0.053s
 
+		console.time('Sorting Array of Minis');
 		const sortedMinisArray = arrayOfMinis.sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
-		console.log(
-			'Sorted Array of minis, saving it now... (should take around 50 seconds, which is reasonable for this size)'
-		);
-		console.timeLog('Minis Array');
+		console.timeEnd('Sorting Array of Minis'); //! 0.013ms
 
+		console.time('Saving Array of Minis');
 		await MinisArray.create({ mini: sortedMinisArray });
-		console.log('Saved Array of minis, logging final time...');
-		console.timeEnd('Minis Array');
+		console.timeEnd('Saving Array of Minis'); //! 5.836s
+		console.timeEnd('Array Process'); //! 5.912s --- also nearly the same time as saving!
 		console.log('Finished saving the array!\x1b[0m');
 		//! (Color cyan end)
 		//! Array version end
