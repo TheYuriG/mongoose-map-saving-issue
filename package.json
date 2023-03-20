@@ -1,14 +1,15 @@
 {
-  "name": "mongoose-saving-maps-issue",
-  "version": "1.0.0",
-  "description": "A simple repository to replicate a reported issue for a possible mongoose issue with saving long maps to MongoDB.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "TheYuriG",
-  "license": "ISC",
-  "dependencies": {
-    "mongoose": "^7.0.2"
-  }
+	"name": "mongoose-saving-maps-issue",
+	"version": "1.0.0",
+	"description": "A simple repository to replicate a reported issue for a possible mongoose issue with saving long maps to MongoDB.",
+	"main": "index.js",
+	"scripts": {
+		"start": "node index.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "TheYuriG",
+	"license": "ISC",
+	"dependencies": {
+		"mongoose": "^7.0.2"
+	}
 }
