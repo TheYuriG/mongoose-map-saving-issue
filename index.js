@@ -162,8 +162,9 @@ mongoose
 		//! Array version end
 
 		//? Added this utility here to wipe your Maps and Arrays databases if you need it
-		// await MinisMap.deleteOne({});
-		// await MinisArray.deleteOne({});
+		// await Promise.all([MinisMap.deleteOne({}), MinisArray.deleteOne({})]);
+
+		process.exit(0);
 	})
 	.catch(() => {
 		console.log('Error connecting to MongoDB');
