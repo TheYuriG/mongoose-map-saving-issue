@@ -63,12 +63,56 @@ mongoose
 
 		//? Once we have 20K documents, try to save them as map and then as array
 		const aVeryLargeNumberOfMiniDocuments = await Mini.find();
-		//! (Color green end)
 		console.log(
 			'Fetched all Mini documents, total count: ' +
 				aVeryLargeNumberOfMiniDocuments.length +
 				'\x1b[0m'
 		);
+		//! (Color green end)
+
+		//! Map version start
+		//! (Color magenta start)
+		console.log('\x1b[35mStarting the process of mapping all minis and timing it');
+		console.time('Minis Map');
+		const futureMapOfMinis = [];
+		console.log('Created Minis map');
+		console.timeLog('Minis Map');
+		//? Loop through all found Mini documents and creates an array
+		//? for them, which we gonna sort before storing
+		for (
+			let miniPosition = 0;
+			miniPosition < aVeryLargeNumberOfMiniDocuments.length;
+			miniPosition++
+		) {
+			futureMapOfMinis.push([
+				aVeryLargeNumberOfMiniDocuments[miniPosition].id,
+				{
+					miniID: aVeryLargeNumberOfMiniDocuments[miniPosition]._id,
+					timestamp: Math.floor(Math.random() * 100000),
+				},
+			]);
+		}
+		console.log('Set all K/V entries for the Minis Map! Sorting them now...');
+		console.timeLog('Minis Map');
+
+		futureMapOfMinis.sort((a, b) => (a[1].timestamp > b[1].timestamp ? 1 : -1));
+		console.log('Sorted array of Minis, creating Map now...');
+		console.timeLog('Minis Map');
+
+		//? Create a new Map
+		const mapOfMinis = new Map();
+		for (let minisIndex = 0; minisIndex < futureMapOfMinis.length; minisIndex++) {
+			mapOfMinis.set(futureMapOfMinis[minisIndex][0], futureMapOfMinis[minisIndex][1]);
+		}
+		console.log('Minis Map created, saving it now...');
+		console.timeLog('Minis Map');
+
+		await MinisMap.create({ mini: mapOfMinis });
+		console.log('Saved Minis map, logging time...');
+		console.timeLog('Minis Map');
+		console.log('Saved Minis Map successfully!\x1b[0m');
+		//! (Color magenta end)
+		//! Map version end
 	})
 	.catch(() => {
 		console.log('Error connecting to MongoDB');
