@@ -11,7 +11,7 @@ const minisArray = new Schema(
 			type: [
 				{
 					//? Mini ID
-					trophyID: { type: Schema.Types.ObjectId, ref: 'Mini', required: true },
+					miniID: { type: Schema.Types.ObjectId, ref: 'Mini', required: true },
 					//? Timestamp as number
 					timestamp: { type: Number, required: true },
 				},
