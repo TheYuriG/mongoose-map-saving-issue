@@ -6,8 +6,15 @@
 const mongoose = require('mongoose');
 //? Import the key from the private folder. Feel free to change
 //? this to however else you do it instead
+
+//? Check for node arguments to see if the user chose to debug without console colors
+//! This will run with "node index.js colorless" or "npm run colorless"
+const colorless = process.argv.slice(2)[0] == 'colorless';
+
 //! (Color red start)
-console.log("\x1b[31mAttempting to import the mongo key on line 10 of 'index.js'");
+console.log(
+	(colorless ? '' : '\x1b[31m') + "Attempting to import the mongo key on line 10 of 'index.js'"
+);
 const { mongoKey } = require('./private/keys.js');
 
 //? Import our models
@@ -29,7 +36,8 @@ mongoose
 		const totalDocuments = await Mini.find().countDocuments();
 		//! (Color green start)
 		console.log(
-			'\x1b[32mYour database currently has ' +
+			(colorless ? '' : '\x1b[32m') +
+				'Your database currently has ' +
 				totalDocuments +
 				' documents saved (before populating)'
 		);
@@ -72,7 +80,10 @@ mongoose
 
 		//! Map version start
 		//! (Color magenta start)
-		console.log('\x1b[35mStarting the process of mapping all minis and timing it');
+		console.log(
+			(colorless ? '' : '\x1b[35m') +
+				'Starting the process of mapping all minis and timing it'
+		);
 		console.time('Minis Map');
 		const futureMapOfMinis = [];
 		console.log('Created Minis map');
@@ -116,7 +127,10 @@ mongoose
 
 		//! Array version
 		//! (Color cyan start)
-		console.log('\x1b[36mSet all K/V entries for the Minis Map! Sorting them now...');
+		console.log(
+			(colorless ? '' : '\x1b[36m') +
+				'Set all K/V entries for the Minis Map! Sorting them now...'
+		);
 		console.time('Minis Array');
 		const arrayOfMinis = [];
 
