@@ -51,8 +51,8 @@ mongoose
 
 			//? Create documents until we have 20K
 			for (
-				let documentPosition = 0 + totalDocuments;
-				documentPosition + totalDocuments < 20000;
+				let documentPosition = totalDocuments;
+				documentPosition < 20000;
 				documentPosition++
 			) {
 				console.log('creating mini #' + documentPosition);
