@@ -113,6 +113,39 @@ mongoose
 		console.log('Saved Minis Map successfully!\x1b[0m');
 		//! (Color magenta end)
 		//! Map version end
+
+		//! Array version
+		//! (Color cyan start)
+		console.log('\x1b[36mSet all K/V entries for the Minis Map! Sorting them now...');
+		console.time('Minis Array');
+		const arrayOfMinis = [];
+
+		//? Loop through all found Mini documents and creates an Array for them
+		for (
+			let miniPosition = 0;
+			miniPosition < aVeryLargeNumberOfMiniDocuments.length;
+			miniPosition++
+		) {
+			arrayOfMinis.push({
+				miniID: aVeryLargeNumberOfMiniDocuments[miniPosition]._id,
+				timestamp: Math.floor(Math.random() * 100000),
+			});
+		}
+		console.log('Created Array for minis, sorting them now...');
+		console.timeLog('Minis Array');
+
+		const sortedMinisArray = arrayOfMinis.sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
+		console.log(
+			'Sorted Array of minis, saving it now... (should take around 50 seconds, which is reasonable for this size)'
+		);
+		console.timeLog('Minis Array');
+
+		await MinisArray.create({ mini: sortedMinisArray });
+		console.log('Saved Array of minis, logging final time...');
+		console.timeEnd('Minis Array');
+		console.log('Finished saving the array!\x1b[0m');
+		//! (Color cyan end)
+		//! Array version end
 	})
 	.catch(() => {
 		console.log('Error connecting to MongoDB');
