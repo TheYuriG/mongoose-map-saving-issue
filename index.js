@@ -10,9 +10,7 @@ const { processData, createMapOfMinis, createArrayOfMinis } = require('./utiliti
 //! This will run with "node index.js colorless" or "npm run colorless"
 const colorless = process.argv.slice(2)[0] == 'colorless';
 
-console.log(
-	(colorless ? '' : '\x1b[31m') + "Attempting to import the mongo key on line 10 of 'index.js'"
-);
+console.log((colorless ? '' : '\x1b[31m') + "Attempting to import the mongo key'");
 //? Import the key from the private folder. Feel free to change
 //? this to however else you do it instead
 const { mongoKey } = require('./private/keys.js');
