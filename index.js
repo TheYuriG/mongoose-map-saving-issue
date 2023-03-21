@@ -28,19 +28,19 @@ mongoose
 		console.timeEnd('Connection'); //! 2.669s
 		console.log('Connected to MongoDB!\x1b[0m');
 
-		const data = await processData();
+		//? Process the 20K documents
+		const data = await processData(colorless);
 
-		//! Map version start
-		await createMapOfMinis(data);
-		//! Map version end
+		//! Map version of our Minis subdocuments Schema
+		await createMapOfMinis(data, colorless);
 
-		//! Array version
-		await createArrayOfMinis(data);
-		//! Array version end
+		//? Array version of our Minis subdocuments Schema
+		await createArrayOfMinis(data, colorless);
 
 		//? Added this utility here to wipe your Maps and Arrays databases if you need it
 		// await Promise.all([MinisMap.deleteOne({}), MinisArray.deleteOne({})]);
 
+		//? Wrap up and end the script with a success code
 		process.exit(0);
 	})
 	.catch(() => {
