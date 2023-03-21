@@ -18,6 +18,31 @@ There are a few things that this script did not attempt in order to be more effi
 -   I've added some commented out code to wipe the Maps and Arrays created through this process on `index.js`, in case you want to wipe out the created Maps and Arrays without having to manually do so yourself. There is no code for wiping all the 20K documents though, but you can easily add that too. Since creating the Minis take so long, I chose to not include it (not even in commented out form), afraid that someone would just uncomment that part too without paying attention and be forced to create the 20K documents from scratch again. Just trying to avoid giving people enough rope to hang themselves.
 -   I haven't tested if there is a number of documents that causes this issue or if this issue is compounding and only gets worse the larger your map is. You can easily tweak the code at `/utilities/process-data.js` to create/return less documents and try a lower number, if you feel like it.
 
+## Comparison
+
+Just for the sake of comparison, I'll list here my output so you can compare with yours and check for a pattern:
+
+![](https://img.shields.io/badge/-Attempting%20to%20import%20the%20mongo%20key-red) <br />
+![](https://img.shields.io/badge/-Connection%3A%202.068s-red) <br />
+![](https://img.shields.io/badge/-Connected%20to%20MongoDB!-red) <br />
+![](<https://img.shields.io/static/v1?label=&message=Your%20database%20currently%20has%2020000%20documents%20saved%20(before%20populating)&color=yellowgreen>) <br />
+![](https://img.shields.io/badge/-Populating%20documents%3A%20551.926ms-yellowgreen) <br />
+![](https://img.shields.io/badge/-Fetching%20documents%3A%206.460sdocuments%3A%20551.926ms-yellowgreen) <br />
+![](https://img.shields.io/badge/-Fetched%20all%20Mini%20documents%2C%20total%20count%3A%2020000-yellowgreen) <br />
+![](https://img.shields.io/badge/-Starting%20the%20process%20of%20mapping%20all%20minis%20and%20timing%20it-pink) <br />
+![](https://img.shields.io/badge/-Iterating%20through%20all%20minis%3A%20160.904ms-pink) <br />
+![](https://img.shields.io/badge/-Sorting%20all%20minis%3A%2017.813ms-pink) <br />
+![](https://img.shields.io/badge/-Creating%20and%20populating%20Map%20of%20Minis%3A%2012.531ms-pink) <br />
+![](<https://img.shields.io/badge/-Saving%20Map%20of%20Minis%20to%20MongoDB%20using%20Mongoose%3A%206%3A06.078%20(m%3Ass.mmm)-pink>) <br />
+![](<https://img.shields.io/badge/-Map%20Process%3A%206%3A06.274%20(m%3Ass.mmm)-pink>) <br />
+![](https://img.shields.io/badge/-Saved%20Minis%20Map%20successfully!-pink) <br />
+![](https://img.shields.io/badge/-Creating%20Array%20of%20Minis%20now!-blue) <br />
+![](https://img.shields.io/badge/-Populating%20Array%20of%20Minis%3A%2038.974ms-blue) <br />
+![](https://img.shields.io/badge/-Sorting%20Array%20of%20Minis%3A%2027.25ms-blue) <br />
+![](https://img.shields.io/badge/-Saving%20Array%20of%20Minis%3A%205.648s-blue) <br />
+![](https://img.shields.io/badge/-Array%20Process%3A%205.717s-blue) <br />
+![](https://img.shields.io/badge/-Finished%20saving%20the%20array!-blue) <br />
+
 ### Closing notes
 
 There are quite a few things that could have been done different or better, but I'm not going to optimize the hell out of a bug reproduction script. If you feel like contributing to this repository in a way that won't change the original bug reproduction experience (like making a separate `npm run` script), feel free to do so and make a Pull Request, I'll happily merge it.
